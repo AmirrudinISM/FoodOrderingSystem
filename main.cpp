@@ -1,10 +1,14 @@
+#include "Menu.hpp"
 #include "FoodItem.hpp"
 #include <iostream>
 
 void adminLogin();
 void customerLogin();
+void adminMenu();
 
 int main(){
+
+	Menu A;
 
 	std::cout <<"FOOD ORDERING SYSTEM DEMO" << std::endl;
 
@@ -31,7 +35,7 @@ int main(){
 			case 9:
 				std::cout << "Thank you!\nExiting system...\n"; 
 				break;
-				
+
 			default:
 				std::cout << "Please enter the displayed number" <<std::endl;
 				break;
@@ -40,11 +44,90 @@ int main(){
 	return 0;
 }
 
+//Admin menu: 
+//1. view menu
+//2. Manage menu(add food item to menu, delete menu items) 
+//3. view tramsaction history
 void adminLogin(){
 	std::cout << "Logging in as Admin..." <<std::endl;
+
+	//data
+	std::string userName = "SysAdmin";
+	std::string sysPassword = "Unikl2020";
+	//input
+	std::string inUName = "";
+	std::string inPassword = "";
+
+	//prompt & get username & password
+	std::cout << "Enter username: ";
+	std::cin >> inUName;
+
+	if (inUName == userName){
+		std::cout << "Enter password: ";
+		std::cin >> inPassword;
+		if (inPassword == sysPassword){
+			std::cout << "Login successfull!\n Welcome, SysAdmin!\n";
+			adminMenu();
+		}
+		else{
+			std::cout << "Incorrect password\n";
+		}
+
+	}
+	else{
+		std::cout << "User does not exist" << std::endl;
+	}
+
+	
 }
 
 
+//Customer menu:
+//1. view Order, 
+//2. Manage order(add to order, remove from order), 
+//3. apply discount
+//4. make payment
 void customerLogin(){
 	std::cout << "Logging in as Customer..." <<std::endl;
 }
+
+void adminMenu(){
+	int adminIN = 0;
+
+	while (adminIN != 9){
+		//prompt & get input
+		std::cout << "Select action:\n";
+		std::cout << "1. View menu\n";
+		std::cout << "2. Manage menu\n";
+		std::cout << "3. View transaction history\n";
+		std::cout << "9. Exit\n";
+
+		std::cin >> adminIN;
+
+		switch(adminIN){
+			//view menu
+			case 1:
+				std::cout << "Viewing menu\n";
+				break;
+			//manage menu
+			case 2:
+				std::cout << "Managing menu\n";
+				break;
+			//view transaction history
+			case 3:
+				std::cout << "Viewing transaction history\n";
+				break;
+			case 9:
+				std::cout << "Logging out from Admin menu...\n"; 
+				break;
+			default:
+				std::cout << "Please enter correct value.\n"; 
+				break;
+		}
+	}
+}
+
+void manageMenu(){
+	
+}
+
