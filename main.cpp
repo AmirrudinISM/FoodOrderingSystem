@@ -2,12 +2,21 @@
 #include "FoodItem.hpp"
 #include <iostream>
 
-void adminLogin();
+void adminLogin(Menu inMenu);
 void customerLogin();
-void adminMenu();
+void adminMenu(Menu in2);
+void manageMenu(Menu in3);
 
 int main(){
-
+	/*
+	Menu test;
+	test.addToMenu("Chicken",10,5.5);
+	test.addToMenu("Burger",33,2.5);
+	test.addToMenu("Fries",29,2.0);
+	test.addToMenu("Soda",50,1.5);
+	test.displayMenu();
+	*/
+	
 	Menu A;
 
 	std::cout <<"FOOD ORDERING SYSTEM DEMO" << std::endl;
@@ -25,7 +34,7 @@ int main(){
 
 		switch(comInput){
 			case 1:
-				adminLogin();
+				adminLogin(A);
 				break;
 
 			case 2:
@@ -41,6 +50,7 @@ int main(){
 				break;
 		}
 	}
+	
 	return 0;
 }
 
@@ -48,7 +58,7 @@ int main(){
 //1. view menu
 //2. Manage menu(add food item to menu, delete menu items) 
 //3. view tramsaction history
-void adminLogin(){
+void adminLogin(Menu inMenu){
 	std::cout << "Logging in as Admin..." <<std::endl;
 
 	//data
@@ -67,7 +77,7 @@ void adminLogin(){
 		std::cin >> inPassword;
 		if (inPassword == sysPassword){
 			std::cout << "Login successfull!\n Welcome, SysAdmin!\n";
-			adminMenu();
+			adminMenu(inMenu);
 		}
 		else{
 			std::cout << "Incorrect password\n";
@@ -88,10 +98,10 @@ void adminLogin(){
 //3. apply discount
 //4. make payment
 void customerLogin(){
-	std::cout << "Logging in as Customer..." <<std::endl;
+	std::cout << "Logging in as Customer..." << std::endl;
 }
 
-void adminMenu(){
+void adminMenu(Menu in2){
 	int adminIN = 0;
 
 	while (adminIN != 9){
@@ -102,16 +112,33 @@ void adminMenu(){
 		std::cout << "3. View transaction history\n";
 		std::cout << "9. Exit\n";
 
+		std::string inName;
+		int inQuant;
+		double inPrice;
+	
+
 		std::cin >> adminIN;
 
 		switch(adminIN){
 			//view menu
 			case 1:
 				std::cout << "Viewing menu\n";
+				in2.displayMenu();
 				break;
 			//manage menu
 			case 2:
 				std::cout << "Managing menu\n";
+				
+				std::cout << "Please enter food name: ";
+				std::cin >> inName;
+
+				std::cout << "Please enter food quantity: ";
+				std::cin >> inQuant;
+
+				std::cout << "Please enter food price: ";
+				std::cin >> inPrice;
+
+				in2.addToMenu(inName, inQuant, inPrice);
 				break;
 			//view transaction history
 			case 3:
@@ -126,8 +153,3 @@ void adminMenu(){
 		}
 	}
 }
-
-void manageMenu(){
-	
-}
-

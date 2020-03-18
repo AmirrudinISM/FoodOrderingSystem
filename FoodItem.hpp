@@ -7,12 +7,13 @@
 class FoodItem{
 public:
 	static int foodID;
+	int selfID;
 	std::string itemName;
 	double itemPrice;
 	int itemQuantity;
 
 	FoodItem(std::string inName, double inPrice, int inQuant){
-		int selfID = foodID++;
+		selfID = foodID++;
 		itemName = inName;
 		itemPrice = inPrice;
 		itemQuantity = inQuant;
