@@ -2,8 +2,8 @@
 #include "FoodItem.hpp"
 #include <iostream>
 
-void adminLogin(Menu inMenu);
-void customerLogin();
+bool adminLogin();
+void customerMenu();
 void adminMenu(Menu in2);
 void manageMenu(Menu in3);
 
@@ -22,6 +22,7 @@ int main(){
 	std::cout <<"FOOD ORDERING SYSTEM DEMO" << std::endl;
 
 	int comInput = 0;
+	bool authenticStat = false;
 
 	while (comInput != 9){
 		//prompt & get command input
@@ -32,13 +33,19 @@ int main(){
 
 		std::cin >> comInput;
 
+
 		switch(comInput){
+			//user need to authenticate themselves to use admin menu
 			case 1:
-				adminLogin(A);
+				authenticStat = adminLogin();
+				if (authenticStat == true){
+					adminMenu(A);
+				}
 				break;
 
+			//customer; no need for authentication
 			case 2:
-				customerLogin();
+				customerMenu();
 				break;
 
 			case 9:
@@ -58,7 +65,7 @@ int main(){
 //1. view menu
 //2. Manage menu(add food item to menu, delete menu items) 
 //3. view tramsaction history
-void adminLogin(Menu inMenu){
+bool adminLogin(){
 	std::cout << "Logging in as Admin..." <<std::endl;
 
 	//data
@@ -77,18 +84,20 @@ void adminLogin(Menu inMenu){
 		std::cin >> inPassword;
 		if (inPassword == sysPassword){
 			std::cout << "Login successfull!\n Welcome, SysAdmin!\n";
-			adminMenu(inMenu);
+			return true;
 		}
 		else{
 			std::cout << "Incorrect password\n";
+			return false;
 		}
 
 	}
 	else{
 		std::cout << "User does not exist" << std::endl;
+		return false;
 	}
 
-	
+	return false;
 }
 
 
@@ -97,19 +106,20 @@ void adminLogin(Menu inMenu){
 //2. Manage order(add to order, remove from order), 
 //3. apply discount
 //4. make payment
-void customerLogin(){
+void customerMenu(){
 	std::cout << "Logging in as Customer..." << std::endl;
 }
 
 void adminMenu(Menu in2){
+	
 	int adminIN = 0;
-
+	int menuSelect = 0;
 	while (adminIN != 9){
 		//prompt & get input
 		std::cout << "Select action:\n";
 		std::cout << "1. View menu\n";
-		std::cout << "2. Manage menu\n";
-		std::cout << "3. View transaction history\n";
+		std::cout << "2. Add to menu\n";
+		std::cout << "3. Remove from menu\n";
 		std::cout << "9. Exit\n";
 
 		std::string inName;
@@ -142,7 +152,13 @@ void adminMenu(Menu in2){
 				break;
 			//view transaction history
 			case 3:
-				std::cout << "Viewing transaction history\n";
+				std::cout << "Removing from menu\n";
+				in2.displayMenu();
+
+				std::cout << "Select the item to remove: ";
+				std::cin >> menuSelect;
+
+				in2.deleteItem(menuSelect);
 				break;
 			case 9:
 				std::cout << "Logging out from Admin menu...\n"; 
@@ -151,5 +167,7 @@ void adminMenu(Menu in2){
 				std::cout << "Please enter correct value.\n"; 
 				break;
 		}
-	}
+	}	
+	
+	
 }

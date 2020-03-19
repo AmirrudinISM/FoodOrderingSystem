@@ -24,6 +24,10 @@ public:
 		}
 	}
 
+	void deleteItem(int selection){
+		delete foodMenu[selection];
+		foodMenu.erase(foodMenu.begin() + selection);
+	}
 
 };
 
