@@ -1,11 +1,14 @@
 #include "Menu.hpp"
 #include "FoodItem.hpp"
+#include "Order.hpp"
+#include "Transaction.hpp"
+#include <iomanip>
 #include <iostream>
 
 bool adminLogin();
-void customerMenu();
-void adminMenu(Menu in2);
-void manageMenu(Menu in3);
+void customerMenu(Menu *in, Transaction *inHistory);
+void adminMenu(Menu *in2);
+
 
 int main(){
 	/*
@@ -17,7 +20,13 @@ int main(){
 	test.displayMenu();
 	*/
 	
-	Menu A;
+	Menu *A = new Menu();
+	A->addToMenu("Burger", 80, 4.5);
+	A->addToMenu("Fries", 80, 2.5);
+	A->addToMenu("Soda",50,1.5);
+	A->addToMenu("Chicken",10,6.8);
+
+	Transaction *transHistory = new Transaction();
 
 	std::cout <<"FOOD ORDERING SYSTEM DEMO" << std::endl;
 
@@ -26,10 +35,10 @@ int main(){
 
 	while (comInput != 9){
 		//prompt & get command input
-		std::cout << "Select profile to login: " << std::endl;
 		std::cout << "1. ADMIN" << std::endl;
 		std::cout << "2. CUSTOMER" << std::endl;
 		std::cout << "9. Exit program" << std::endl;
+		std::cout << "Select profile to login: ";
 
 		std::cin >> comInput;
 
@@ -37,15 +46,15 @@ int main(){
 		switch(comInput){
 			//user need to authenticate themselves to use admin menu
 			case 1:
-				authenticStat = adminLogin();
-				if (authenticStat == true){
+				//authenticStat = adminLogin();
+				//if (authenticStat == true){
 					adminMenu(A);
-				}
+				//}
 				break;
 
 			//customer; no need for authentication
 			case 2:
-				customerMenu();
+				customerMenu(A, transHistory);
 				break;
 
 			case 9:
@@ -106,21 +115,49 @@ bool adminLogin(){
 //2. Manage order(add to order, remove from order), 
 //3. apply discount
 //4. make payment
-void customerMenu(){
-	std::cout << "Logging in as Customer..." << std::endl;
+void customerMenu(Menu *in, Transaction *inHistory){
+	Order *currentOrder = new Order();
+	int custIn = 0;
+
+	while(custIn != 9){
+		//prompt & get input
+		std::cout << "1. View Order\n";
+		std::cout << "2. Add to order\n";
+		std::cout << "3. Remove from order\n";
+		std::cout << "4. Checkout\n";
+		std::cout << "9. Exit\n";
+		std::cout << "Select action: ";
+		
+		std::cin >> custIn;
+		switch(custIn){
+			case 1:
+				currentOrder->viewOrder();
+				break;
+			case 2:
+				in->displayMenu();
+				currentOrder->addToOrder(in);
+				break;
+			case 3:
+			case 4:
+			case 9:
+			default:
+				std::cout << "Please enter correct value.\n"; 
+				break;
+		}
+	}
 }
 
-void adminMenu(Menu in2){
+void adminMenu(Menu *in2){
 	
 	int adminIN = 0;
 	int menuSelect = 0;
 	while (adminIN != 9){
 		//prompt & get input
-		std::cout << "Select action:\n";
 		std::cout << "1. View menu\n";
 		std::cout << "2. Add to menu\n";
 		std::cout << "3. Remove from menu\n";
 		std::cout << "9. Exit\n";
+		std::cout << "Select action: ";
 
 		std::string inName;
 		int inQuant;
@@ -133,7 +170,7 @@ void adminMenu(Menu in2){
 			//view menu
 			case 1:
 				std::cout << "Viewing menu\n";
-				in2.displayMenu();
+				in2->displayMenu();
 				break;
 			//manage menu
 			case 2:
@@ -148,17 +185,17 @@ void adminMenu(Menu in2){
 				std::cout << "Please enter food price: ";
 				std::cin >> inPrice;
 
-				in2.addToMenu(inName, inQuant, inPrice);
+				in2->addToMenu(inName, inQuant, inPrice);
 				break;
 			//view transaction history
 			case 3:
 				std::cout << "Removing from menu\n";
-				in2.displayMenu();
+				in2->displayMenu();
 
 				std::cout << "Select the item to remove: ";
 				std::cin >> menuSelect;
 
-				in2.deleteItem(menuSelect);
+				in2->deleteItem(menuSelect);
 				break;
 			case 9:
 				std::cout << "Logging out from Admin menu...\n"; 
