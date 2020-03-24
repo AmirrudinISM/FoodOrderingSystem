@@ -59,6 +59,19 @@ public:
 	}
 
 	void removeFromOrder(){
+		//display order
+		for (int i = 0; i < receipt.size(); i++){
+			std::cout << i+1 << ". " << receipt[i]->itemName << " | " << receipt[i]->itemQuantity << std:: endl;
+		}
+
+		std::cout << "Select which item to remove: ";
+
+		int sel = 0;
+
+		std::cin >> sel;
+
+		delete receipt[sel];
+		receipt.erase(receipt.begin() + sel); 
 
 	}
 

@@ -11,15 +11,7 @@ void adminMenu(Menu *in2);
 
 
 int main(){
-	/*
-	Menu test;
-	test.addToMenu("Chicken",10,5.5);
-	test.addToMenu("Burger",33,2.5);
-	test.addToMenu("Fries",29,2.0);
-	test.addToMenu("Soda",50,1.5);
-	test.displayMenu();
-	*/
-	
+
 	Menu *A = new Menu();
 	A->addToMenu("Burger", 80, 4.5);
 	A->addToMenu("Fries", 80, 2.5);
@@ -138,8 +130,13 @@ void customerMenu(Menu *in, Transaction *inHistory){
 				currentOrder->addToOrder(in);
 				break;
 			case 3:
+				//remove order
+				currentOrder->removeFromOrder();
+				break;
 			case 4:
+				break;
 			case 9:
+				break;
 			default:
 				std::cout << "Please enter correct value.\n"; 
 				break;
