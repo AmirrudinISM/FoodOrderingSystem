@@ -6,7 +6,7 @@
 #include <iostream>
 
 bool adminLogin();
-void customerMenu(Menu *in, Transaction *inHistory);
+void customerMenu(Menu *in, std::vector<Order*> inTransHist);
 void adminMenu(Menu *in2);
 
 
@@ -18,7 +18,8 @@ int main(){
 	A->addToMenu("Soda",50,1.5);
 	A->addToMenu("Chicken",10,6.8);
 
-	Transaction *transHistory = new Transaction();
+	//keeps records of orders
+	std::vector<Order*> transactionHistory; 
 
 	std::cout <<"FOOD ORDERING SYSTEM DEMO" << std::endl;
 
@@ -46,7 +47,7 @@ int main(){
 
 			//customer; no need for authentication
 			case 2:
-				customerMenu(A, transHistory);
+				customerMenu(A, transactionHistory);
 				break;
 
 			case 9:
@@ -107,7 +108,7 @@ bool adminLogin(){
 //2. Manage order(add to order, remove from order), 
 //3. apply discount
 //4. make payment
-void customerMenu(Menu *in, Transaction *inHistory){
+void customerMenu(Menu *in, std::vector<Order*> inTransHist){
 	Order *currentOrder = new Order();
 	int custIn = 0;
 
@@ -134,14 +135,20 @@ void customerMenu(Menu *in, Transaction *inHistory){
 				currentOrder->removeFromOrder();
 				break;
 			case 4:
+				currentOrder->checkOut();
+				inTransHist.push_back(currentOrder);
+				goto EXIT;
 				break;
 			case 9:
+				std::cout << "Logging out...\n";
 				break;
 			default:
 				std::cout << "Please enter correct value.\n"; 
 				break;
 		}
+		
 	}
+	EXIT: std::cout << "Thank you!\n";
 }
 
 void adminMenu(Menu *in2){

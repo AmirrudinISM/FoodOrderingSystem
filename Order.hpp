@@ -3,15 +3,17 @@
 
 #include "FoodItem.hpp"
 #include "Menu.hpp"
+//#include "Transaction.hpp"
 #include <ctime>
 #include <string>
 #include <vector>
+#include <iomanip>
 
 class Order{
 public:
 	std::vector<FoodItem*> receipt;
 	std::string orderTime;
-	int totalOrderCost;
+	double totalOrderCost;
 	
 	void viewOrder(){
 		
@@ -53,7 +55,7 @@ public:
 		inMenu->foodMenu[sel]->itemQuantity -= quant;
 
 		itemPrices = (inMenu->foodMenu[sel]->itemPrice) * quant;
-
+		totalOrderCost += itemPrices;
 		FoodItem *temp = new FoodItem(foodName,inMenu->foodMenu[sel]->itemPrice,quant,itemPrices);
 		receipt.push_back(temp);
 	}
@@ -70,9 +72,28 @@ public:
 
 		std::cin >> sel;
 
-		delete receipt[sel];
-		receipt.erase(receipt.begin() + sel); 
+		totalOrderCost -= receipt[sel - 1]->itemQuantity * receipt[sel - 1]->itemPrice;
+		delete receipt[sel - 1];
+		receipt.erase(receipt.begin() + (sel -1));
 
+		 
+
+	}
+
+	void checkOut(){
+		double inPaid = 0;
+		double input = 0;
+		
+		std::cout << "Total: RM" << std::setprecision(2) << totalOrderCost << std::endl;
+		while (inPaid < totalOrderCost){
+			
+			std::cout << "Please enter cash: ";
+			std::cin >> input;
+			inPaid += input;
+			std::cout << "Total paid : RM" << std::setprecision(2) << inPaid << std::endl;
+			std::cout << "Remaining cost: RM" << std::setprecision(2) << totalOrderCost - inPaid << std::endl;
+			
+		}
 	}
 
 	Order(){
