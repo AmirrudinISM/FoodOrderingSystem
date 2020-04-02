@@ -3,7 +3,6 @@
 
 #include "FoodItem.hpp"
 #include "Menu.hpp"
-//#include "Transaction.hpp"
 #include <ctime>
 #include <string>
 #include <vector>
@@ -91,9 +90,10 @@ public:
 			std::cin >> input;
 			inPaid += input;
 			std::cout << "Total paid : RM" << std::setprecision(2) << inPaid << std::endl;
-			std::cout << "Remaining cost: RM" << std::setprecision(2) << totalOrderCost - inPaid << std::endl;
-			
+			std::cout << "Remaining cost: RM" << std::setprecision(2) << totalOrderCost - inPaid << std::endl;	
 		}
+
+		std::cout << "Payment completed! Thank you!\n";
 	}
 
 	Order(){
