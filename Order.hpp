@@ -51,7 +51,7 @@ public:
 
 		std::cout << "Please enter quantity: ";
 		std::cin >> quant;
-		inMenu->foodMenu[sel]->itemQuantity -= quant;
+		//inMenu->foodMenu[sel]->itemQuantity -= quant;
 
 		itemPrices = (inMenu->foodMenu[sel]->itemPrice) * quant;
 		totalOrderCost += itemPrices;
@@ -79,7 +79,7 @@ public:
 
 	}
 
-	void checkOut(){
+	void checkOut(Menu *inMenu){
 		double inPaid = 0;
 		double input = 0;
 		
@@ -92,7 +92,13 @@ public:
 			std::cout << "Total paid : RM" << std::setprecision(2) << inPaid << std::endl;
 			std::cout << "Remaining cost: RM" << std::setprecision(2) << totalOrderCost - inPaid << std::endl;	
 		}
-
+		for (int i = 0; i < receipt.size(); i++){
+			for (int j = 0; j < inMenu->foodMenu.size();j++){
+				if (receipt[i]->itemName == inMenu->foodMenu[j]->itemName){
+					inMenu->foodMenu[j]->itemQuantity -= receipt[i]->itemQuantity;
+				}
+			}
+		}
 		std::cout << "Payment completed! Thank you!\n";
 	}
 

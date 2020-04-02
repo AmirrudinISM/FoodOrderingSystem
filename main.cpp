@@ -134,7 +134,7 @@ std::vector<Order*> customerMenu(Menu *in, std::vector<Order*> inTransHist){
 				currentOrder->removeFromOrder();
 				break;
 			case 4:
-				currentOrder->checkOut();
+				currentOrder->checkOut(in);
 				inTransHist.push_back(currentOrder);
 				return inTransHist;
 				goto EXIT;
