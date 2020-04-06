@@ -1,13 +1,12 @@
 #include "Menu.hpp"
 #include "FoodItem.hpp"
 #include "Order.hpp"
-#include "Transaction.hpp"
 #include <iomanip>
 #include <iostream>
 
 bool adminLogin();
-void customerMenu(Menu *in, std::vector<Order*> inTransHist);
-void adminMenu(Menu *in2);
+std::vector<Order*> customerMenu(Menu *in, std::vector<Order*> inTransHist);
+void adminMenu(Menu *in2, std::vector<Order*> inTransHist);
 
 
 int main(){
@@ -41,13 +40,13 @@ int main(){
 			case 1:
 				//authenticStat = adminLogin();
 				//if (authenticStat == true){
-					adminMenu(A);
+					adminMenu(A, transactionHistory);
 				//}
 				break;
 
 			//customer; no need for authentication
 			case 2:
-				customerMenu(A, transactionHistory);
+				transactionHistory = customerMenu(A, transactionHistory);
 				break;
 
 			case 9:
@@ -108,7 +107,7 @@ bool adminLogin(){
 //2. Manage order(add to order, remove from order), 
 //3. apply discount
 //4. make payment
-void customerMenu(Menu *in, std::vector<Order*> inTransHist){
+std::vector<Order*> customerMenu(Menu *in, std::vector<Order*> inTransHist){
 	Order *currentOrder = new Order();
 	int custIn = 0;
 
@@ -135,8 +134,9 @@ void customerMenu(Menu *in, std::vector<Order*> inTransHist){
 				currentOrder->removeFromOrder();
 				break;
 			case 4:
-				currentOrder->checkOut();
+				currentOrder->checkOut(in);
 				inTransHist.push_back(currentOrder);
+				return inTransHist;
 				goto EXIT;
 				break;
 			case 9:
@@ -151,15 +151,18 @@ void customerMenu(Menu *in, std::vector<Order*> inTransHist){
 	EXIT: std::cout << "Thank you!\n";
 }
 
-void adminMenu(Menu *in2){
+void adminMenu(Menu *in2, std::vector<Order*> inTransHist){
 	
 	int adminIN = 0;
 	int menuSelect = 0;
+	
 	while (adminIN != 9){
+		int sel = 0;
 		//prompt & get input
 		std::cout << "1. View menu\n";
 		std::cout << "2. Add to menu\n";
 		std::cout << "3. Remove from menu\n";
+		std::cout << "4. View transaction history\n";
 		std::cout << "9. Exit\n";
 		std::cout << "Select action: ";
 
@@ -191,7 +194,7 @@ void adminMenu(Menu *in2){
 
 				in2->addToMenu(inName, inQuant, inPrice);
 				break;
-			//view transaction history
+			//delete menu item
 			case 3:
 				std::cout << "Removing from menu\n";
 				in2->displayMenu();
@@ -200,6 +203,28 @@ void adminMenu(Menu *in2){
 				std::cin >> menuSelect;
 
 				in2->deleteItem(menuSelect);
+				break;
+			case 4:
+				
+				while (sel != -1){
+					//std::cout <<"Array size is: " << inTransHist.size() << std::endl;
+					for (int i = 0; i < inTransHist.size(); i++){
+						std::cout << i << ". " << inTransHist[i]->orderTime;
+					}
+
+					std::cout << "Please select which transaction to view or enter -1 to exit: ";
+					std::cin >> sel;
+
+					if (sel >= 0 && sel < inTransHist.size()){
+						inTransHist[sel]->viewOrder();
+					}
+					else if ( sel == -1){
+						std::cout << "Returning to menu\n";
+					}
+					else{
+						std::cout << "Please select within the range or enter -1 to exit";
+					}
+				}
 				break;
 			case 9:
 				std::cout << "Logging out from Admin menu...\n"; 
